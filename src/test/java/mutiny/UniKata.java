@@ -46,18 +46,15 @@ public class UniKata {
         Uni<Integer> random = Uni.createFrom().item(() -> error("Boom!"));
         final int FALLBACK = -1;
 
-        Function<Uni<Integer>, Uni<Integer>> recover = uni -> null;
-
-        eventually( recover.apply(random), is(-1) );
+        eventually( random, is(-1) );
     }
 
     @Test
     public void uni_can_retry(){
         AtomicInteger attempts = new AtomicInteger(0);
         Uni<String> http_get = Uni.createFrom().item(() -> (attempts.incrementAndGet() < 3) ? error("Boom!") : SUCCESFULL_RESULT);
-        BiFunction<Integer, Uni<String>, Uni<String>> retry = (retries, uni) -> null;
 
-        eventually( retry.apply(3, http_get), is(SUCCESFULL_RESULT));
+        eventually( http_get, is(SUCCESFULL_RESULT));
     }
 
     @Test public void uni_value_can_be_mapped(){ }
