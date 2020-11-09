@@ -2,9 +2,6 @@ package mutiny;
 
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.tuples.Tuple2;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -96,12 +93,33 @@ public class UniKata {
         eventually( http_get, is(SUCCESFULL_RESULT));
     }
 
-    @Test public void uni_value_can_be_mapped(){ }
+    @Test public void uni_value_can_be_mapped(){
+        Double RADIUS = 10d;
+        Uni<Double> pi = computePiOnGPU();
+        Uni<Double> area = null;
 
-    @Test public void uni_can_be_chained_with_uni(){ }
+        eventually(area, is(3141.5));
+    }
 
-    @Test public void uni_can_be_chained_with_uni_ignoring_the_output(){ }
+    @Test public void uni_can_be_chained_with_uni(){
+        Uni<Double> RADIUS = parse("10");
+        Uni<Double> pi = computePiOnGPU();
+        Uni<Double> area = null;
 
+        eventually(area, is(3141.5));
+    }
+
+    private Uni<Double> parse(String value) {
+        return Uni.createFrom().item( () -> Double.parseDouble(value));
+    }
+
+    private Uni<Double> computePiOnGPU() {
+        return pure(3.1415);
+    }
+
+
+
+    @Test public void uni_can_be_chained_with_uni_ignoring_the_output(){}
 
 }
 
