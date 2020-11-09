@@ -2,18 +2,57 @@ package mutiny;
 
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.tuples.Tuple2;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static mutiny.predef.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 public class UniKata {
 
+    // Read THIS before you start this Kata: https://smallrye.io/smallrye-mutiny/
+
     public static final String SUCCESFULL_RESULT = "...";
+
+    @Test
+    public void supplier(){
+        Supplier<Integer> f = null;
+
+        assertThat(f.get(), is(42));
+    }
+
+    @Test
+    public void function(){
+        Function<Integer, Integer> square = null;
+
+        assertThat(square.apply(4), is(16));
+    }
+
+    @Test
+    public void biFunction(){
+        BiFunction<Integer, Integer, Integer> add = null;
+
+        assertThat(add.apply(2, 3), is(5));
+    }
+
+    @Test
+    public void consumer(){
+        Integer received = null;
+        Consumer<Integer> callback = null;
+
+        callback.accept(2);
+
+        assertThat(received, is(2));
+    }
 
     @Test
     public void constant_can_be_lifted_to_uni(){
